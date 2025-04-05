@@ -2,7 +2,8 @@
 session_start();
 
 // Connect to NeonDB (PostgreSQL)
-$conn_string = "host=ep-snowy-tree-a1pctx1d-pooler.ap-southeast-1.aws.neon.tech port=5432 dbname=hospital_DB user=neondb_owner password=npg_Blop2Ye3VZij sslmode=require";
+$conn_string = getenv("DB_CONNECTION_STRING");
+
 $con = pg_connect($conn_string);
 
 if (!$con) {
