@@ -1,19 +1,29 @@
-# Use the official PHP-Apache image
+# Use the official PHP-Apache base image
 FROM php:8.2-apache
 
-# Install required dependencies and PostgreSQL extension
+# Install dependencies and PHP extensions
 RUN apt-get update && \
-    apt-get install -y libpq-dev && \
-    docker-php-ext-install pgsql pdo_pgsql
+    apt-get install -y \
+        libpq-dev \
+        default-mysql-client \
+        libpng-dev \
+        libjpeg-dev \
+        libonig-dev \
+        libxml2-dev \
+        unzip \
+        zip \
+        curl \
+        git && \
+    docker-php-ext-install mysqli pgsql pdo_pgsql
 
-# Enable mod_rewrite (optional if you use .htaccess)
+# Enable Apache modules (mod_rewrite for .htaccess)
 RUN a2enmod rewrite
 
-# Copy all files from your project into the Apache web root
+# Copy project files into Apache's root directory
 COPY . /var/www/html/
 
-# Set proper permissions (optional but recommended)
+# Set proper permissions (recommended)
 RUN chown -R www-data:www-data /var/www/html
 
-# Expose port 80
+# Expose Apache port
 EXPOSE 80
